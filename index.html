@@ -636,6 +636,159 @@
       }
     }
 
+    @media (max-width: 760px) {
+      html,
+      body {
+        width: 100%;
+        max-width: 100%;
+        overflow-x: hidden;
+      }
+
+      body {
+        position: relative;
+      }
+
+      .page {
+        width: 100%;
+        max-width: 100%;
+        margin: 0;
+        padding-top: max(28px, env(safe-area-inset-top));
+        padding-right: max(12px, env(safe-area-inset-right));
+        padding-bottom: 30px;
+        padding-left: max(12px, env(safe-area-inset-left));
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        overflow-x: hidden;
+      }
+
+      .hero-shell,
+      .team-section,
+      .footer {
+        width: 100%;
+        max-width: 430px;
+        margin-left: auto;
+        margin-right: auto;
+        align-self: center;
+      }
+
+      .hero-shell {
+        border-radius: 30px;
+      }
+
+      .hero {
+        width: 100%;
+        min-height: auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 42px 18px 38px;
+      }
+
+      .hero > div {
+        width: 100%;
+        max-width: 390px;
+        margin-left: auto;
+        margin-right: auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .logo-wrap {
+        width: 100%;
+        max-width: 100%;
+        margin-left: auto;
+        margin-right: auto;
+        justify-content: center;
+      }
+
+      .logo-card {
+        width: 100%;
+        max-width: 370px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .logo-card img {
+        width: 100%;
+        max-width: 370px;
+        max-height: none;
+        height: auto;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .affiliation {
+        width: 100%;
+        max-width: 340px;
+        margin-left: auto;
+        margin-right: auto;
+        text-align: center;
+        font-size: clamp(0.66rem, 2.55vw, 0.76rem);
+        line-height: 1.45;
+        letter-spacing: 0.11em;
+      }
+
+      .title-mark {
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      h1 {
+        width: 100%;
+        max-width: 390px;
+        margin-left: auto;
+        margin-right: auto;
+        text-align: center;
+        font-size: clamp(2.02rem, 10.2vw, 3.25rem);
+        line-height: 0.97;
+        letter-spacing: -0.052em;
+      }
+
+      .hero-actions {
+        width: 100%;
+        max-width: 330px;
+        margin-left: auto;
+        margin-right: auto;
+        align-items: stretch;
+        justify-content: center;
+      }
+
+      .button {
+        width: 100%;
+        min-width: 0;
+      }
+
+      .team-heading {
+        width: 100%;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .team-grid {
+        width: 100%;
+        max-width: 100%;
+        grid-template-columns: 1fr;
+      }
+
+      .profile-card {
+        width: 100%;
+        max-width: 430px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .contact-value {
+        font-size: 0.84rem;
+        white-space: normal;
+        overflow: visible;
+        text-overflow: clip;
+        overflow-wrap: anywhere;
+      }
+    }
+
     @media (prefers-reduced-motion: reduce) {
       html {
         scroll-behavior: auto;
