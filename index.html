@@ -255,7 +255,13 @@
     .team-section {
       width: 100%;
       max-width: 100%;
-      margin-top: 26px;
+      min-height: 100svh;
+      margin-top: 0;
+      padding: clamp(42px, 7vh, 72px) 0 clamp(52px, 8vh, 84px);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      scroll-margin-top: 0;
     }
 
     .team-heading {
@@ -516,7 +522,8 @@
     .one-pager-section {
       width: 100%;
       max-width: 100%;
-      margin-top: 28px;
+      margin-top: 34px;
+      scroll-margin-top: 24px;
     }
 
     .one-pager-card {
@@ -556,6 +563,41 @@
       height: 100%;
       object-fit: contain;
       background: white;
+    }
+
+    .one-pager-fallback {
+      display: none;
+      min-height: 360px;
+      width: 100%;
+      padding: 28px;
+      place-items: center;
+      text-align: center;
+      color: #102a43;
+      background:
+        radial-gradient(circle at top, rgba(10, 102, 194, 0.10), transparent 18rem),
+        linear-gradient(180deg, #ffffff 0%, #edf2f7 100%);
+    }
+
+    .one-pager-frame.preview-missing img {
+      display: none;
+    }
+
+    .one-pager-frame.preview-missing .one-pager-fallback {
+      display: grid;
+    }
+
+    .one-pager-fallback strong {
+      display: block;
+      margin-bottom: 8px;
+      color: #0f2740;
+      font-size: 1.05rem;
+    }
+
+    .one-pager-fallback span {
+      display: block;
+      color: #52616f;
+      font-size: 0.9rem;
+      line-height: 1.45;
     }
 
     .one-pager-note {
@@ -608,6 +650,26 @@
       text-align: center;
       font-size: 0.82rem;
       letter-spacing: 0.03em;
+      display: grid;
+      gap: 8px;
+      justify-items: center;
+    }
+
+    .maker-mark {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      color: rgba(237, 242, 244, 0.32);
+      font-size: 0.72rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .maker-mark span {
+      color: rgba(224, 122, 63, 0.72);
+      font-size: 0.95rem;
+      line-height: 1;
     }
 
     @media (max-width: 1040px) {
@@ -828,6 +890,13 @@
         width: 100%;
         margin-left: auto;
         margin-right: auto;
+      }
+
+      .team-section {
+        min-height: auto;
+        margin-top: 26px;
+        padding: 0;
+        display: block;
       }
 
       .team-grid {
@@ -1059,7 +1128,13 @@
         <div class="team-heading">One-Pager</div>
         <div class="one-pager-frame">
           <a href="one-pager.pdf" target="_blank" rel="noopener noreferrer" aria-label="Open project one-pager PDF">
-            <img src="one-pager-preview.png" alt="Project one-pager for biomimetic 3D-bioprinted cartilage implants">
+            <img src="./one-pager-preview.png?v=2" alt="Project one-pager for biomimetic 3D-bioprinted cartilage implants" onerror="this.closest('.one-pager-frame').classList.add('preview-missing');">
+            <div class="one-pager-fallback" aria-hidden="true">
+              <div>
+                <strong>One-pager preview</strong>
+                <span>If the preview does not appear, open the PDF below.</span>
+              </div>
+            </div>
           </a>
         </div>
         <p class="one-pager-note">Tap the preview to open the full PDF.</p>
@@ -1071,7 +1146,8 @@
     </section>
 
     <footer class="footer reveal">
-      UC Berkeley Bioengineering Capstone · Fung Institute
+      <div>UC Berkeley Bioengineering Capstone · Fung Institute</div>
+      <div class="maker-mark">Made by Collis <span aria-hidden="true">🧬</span></div>
     </footer>
   </main>
 
