@@ -533,21 +533,35 @@
 
     .one-pager-frame {
       width: 100%;
-      max-width: 720px;
-      aspect-ratio: 8.5 / 11;
+      max-width: 760px;
       margin: 0 auto;
       border-radius: 22px;
       overflow: hidden;
-      border: 1px solid rgba(237, 242, 244, 0.10);
-      background: rgba(255,255,255,0.92);
+      border: 1px solid rgba(237, 242, 244, 0.12);
+      background: rgba(255,255,255,0.96);
+      box-shadow: 0 18px 46px rgba(0, 0, 0, 0.26);
     }
 
-    .one-pager-frame iframe {
-      width: 100%;
-      height: 100%;
-      border: 0;
+    .one-pager-frame a {
       display: block;
+      width: 100%;
       background: white;
+    }
+
+    .one-pager-frame img {
+      display: block;
+      width: 100%;
+      height: auto;
+      background: white;
+    }
+
+    .one-pager-note {
+      margin: 12px auto 0;
+      max-width: 640px;
+      color: rgba(237, 242, 244, 0.56);
+      font-size: 0.86rem;
+      line-height: 1.45;
+      text-align: center;
     }
 
     .one-pager-actions {
@@ -832,8 +846,12 @@
 
       .one-pager-frame {
         max-width: 100%;
-        min-height: 520px;
+        min-height: 0;
         border-radius: 18px;
+      }
+
+      .one-pager-note {
+        font-size: 0.82rem;
       }
 
       .one-pager-actions {
@@ -1035,8 +1053,11 @@
       <div class="one-pager-card">
         <div class="team-heading">One-Pager</div>
         <div class="one-pager-frame">
-          <iframe src="one-pager.pdf#toolbar=0&navpanes=0" title="Project one-pager PDF"></iframe>
+          <a href="one-pager.pdf" target="_blank" rel="noopener noreferrer" aria-label="Open project one-pager PDF">
+            <img src="one-pager-preview.png" alt="Project one-pager for biomimetic 3D-bioprinted cartilage implants">
+          </a>
         </div>
+        <p class="one-pager-note">Tap the preview to open the full PDF.</p>
         <div class="one-pager-actions">
           <a class="button primary" href="one-pager.pdf" target="_blank" rel="noopener noreferrer">Open PDF</a>
           <a class="button" href="one-pager.pdf" download>Download</a>
@@ -1052,7 +1073,7 @@
   <script>
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    const smoothScrollTo = (target, duration = 950) => {
+    const smoothScrollTo = (target, duration = 850) => {
       const start = window.scrollY;
       const targetTop = target.getBoundingClientRect().top + window.scrollY - 14;
       const distance = targetTop - start;
@@ -1099,87 +1120,6 @@
     });
 
     revealElements.forEach((element) => revealObserver.observe(element));
-
-    if (!prefersReducedMotion) {
-      const scrollState = {
-        current: window.scrollY,
-        target: window.scrollY,
-        raf: null
-      };
-
-      const clamp = (value, min, max) => Math.max(min, Math.min(value, max));
-      const maxScroll = () => document.documentElement.scrollHeight - window.innerHeight;
-
-      const animateSlowScroll = () => {
-        scrollState.current += (scrollState.target - scrollState.current) * 0.24;
-
-        if (Math.abs(scrollState.target - scrollState.current) < 0.45) {
-          scrollState.current = scrollState.target;
-          window.scrollTo(0, scrollState.current);
-          scrollState.raf = null;
-          return;
-        }
-
-        window.scrollTo(0, scrollState.current);
-        scrollState.raf = window.requestAnimationFrame(animateSlowScroll);
-      };
-
-      const startSlowScroll = () => {
-        if (!scrollState.raf) {
-          scrollState.raf = window.requestAnimationFrame(animateSlowScroll);
-        }
-      };
-
-      window.addEventListener('wheel', (event) => {
-        if (event.ctrlKey) return;
-        event.preventDefault();
-
-        scrollState.target = clamp(
-          scrollState.target + event.deltaY * 0.78,
-          0,
-          maxScroll()
-        );
-
-        startSlowScroll();
-      }, { passive: false });
-
-      let lastTouchY = null;
-
-      window.addEventListener('touchstart', (event) => {
-        if (!event.touches || event.touches.length !== 1) return;
-        lastTouchY = event.touches[0].clientY;
-        scrollState.current = window.scrollY;
-        scrollState.target = window.scrollY;
-      }, { passive: true });
-
-      window.addEventListener('touchmove', (event) => {
-        if (!event.touches || event.touches.length !== 1 || lastTouchY === null) return;
-        event.preventDefault();
-
-        const nextTouchY = event.touches[0].clientY;
-        const delta = lastTouchY - nextTouchY;
-        lastTouchY = nextTouchY;
-
-        scrollState.target = clamp(
-          scrollState.target + delta * 1.0,
-          0,
-          maxScroll()
-        );
-
-        startSlowScroll();
-      }, { passive: false });
-
-      window.addEventListener('touchend', () => {
-        lastTouchY = null;
-      }, { passive: true });
-
-      window.addEventListener('scroll', () => {
-        if (!scrollState.raf) {
-          scrollState.current = window.scrollY;
-          scrollState.target = window.scrollY;
-        }
-      }, { passive: true });
-    }
 
     document.querySelectorAll('.copy-button').forEach((button) => {
       button.addEventListener('click', async (event) => {
