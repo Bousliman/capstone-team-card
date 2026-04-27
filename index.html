@@ -565,39 +565,142 @@
       background: white;
     }
 
-    .one-pager-fallback {
-      display: none;
-      min-height: 360px;
+    .one-pager-mini {
       width: 100%;
-      padding: 28px;
-      place-items: center;
+      height: 100%;
+      padding: clamp(16px, 4.8%, 28px);
+      background:
+        radial-gradient(circle at 82% 18%, rgba(10, 102, 194, 0.10), transparent 9rem),
+        radial-gradient(circle at 10% 88%, rgba(224, 122, 63, 0.10), transparent 8rem),
+        linear-gradient(180deg, #ffffff 0%, #f4f7f8 100%);
+      color: #132331;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 10px;
+      text-align: left;
+    }
+
+    .mini-kicker {
+      align-self: flex-start;
+      padding: 5px 8px;
+      border-radius: 999px;
+      background: rgba(10, 102, 194, 0.08);
+      color: #0a66c2;
+      font-size: clamp(0.46rem, 1.55vw, 0.66rem);
+      font-weight: 850;
+      letter-spacing: 0.11em;
+      text-transform: uppercase;
+    }
+
+    .one-pager-mini h3 {
+      margin: 0;
+      color: #102a43;
+      font-size: clamp(1.05rem, 3.8vw, 1.9rem);
+      line-height: 0.98;
+      letter-spacing: -0.055em;
+      text-wrap: balance;
+    }
+
+    .mini-subtitle {
+      margin: 0;
+      color: #334e68;
+      font-size: clamp(0.56rem, 2.05vw, 0.88rem);
+      line-height: 1.3;
+      font-weight: 650;
+    }
+
+    .mini-team {
+      margin: 0;
+      color: #627d98;
+      font-size: clamp(0.45rem, 1.55vw, 0.68rem);
+      line-height: 1.32;
+    }
+
+    .mini-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .mini-block {
+      border: 1px solid rgba(16, 42, 67, 0.10);
+      border-radius: 12px;
+      padding: 9px;
+      background: rgba(255, 255, 255, 0.72);
+    }
+
+    .mini-block span {
+      display: block;
+      color: #0a66c2;
+      font-size: clamp(0.46rem, 1.5vw, 0.62rem);
+      font-weight: 850;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+
+    .mini-block p {
+      margin: 0;
+      color: #243b53;
+      font-size: clamp(0.48rem, 1.7vw, 0.68rem);
+      line-height: 1.32;
+    }
+
+    .mini-diagram {
+      position: relative;
+      overflow: hidden;
+      min-height: 92px;
+      border-radius: 16px;
+      border: 1px solid rgba(16, 42, 67, 0.10);
+      background:
+        linear-gradient(180deg, rgba(10, 102, 194, 0.08), transparent 48%),
+        rgba(255, 255, 255, 0.72);
+      display: grid;
+      align-content: center;
+      gap: 7px;
+      padding: 14px;
+    }
+
+    .mini-layer {
+      position: relative;
+      z-index: 1;
+      width: 78%;
+      margin: 0 auto;
+      border-radius: 999px;
+      padding: 7px 10px;
       text-align: center;
       color: #102a43;
-      background:
-        radial-gradient(circle at top, rgba(10, 102, 194, 0.10), transparent 18rem),
-        linear-gradient(180deg, #ffffff 0%, #edf2f7 100%);
+      font-size: clamp(0.48rem, 1.6vw, 0.68rem);
+      font-weight: 750;
+      line-height: 1;
     }
 
-    .one-pager-frame.preview-missing img {
-      display: none;
+    .layer-top {
+      background: rgba(94, 126, 145, 0.20);
+      border: 1px solid rgba(94, 126, 145, 0.22);
     }
 
-    .one-pager-frame.preview-missing .one-pager-fallback {
-      display: grid;
+    .layer-bottom {
+      background: rgba(224, 122, 63, 0.18);
+      border: 1px solid rgba(224, 122, 63, 0.20);
     }
 
-    .one-pager-fallback strong {
-      display: block;
-      margin-bottom: 8px;
-      color: #0f2740;
-      font-size: 1.05rem;
+    .mini-dots {
+      position: absolute;
+      inset: 0;
+      opacity: 0.22;
+      background-image: radial-gradient(#0a66c2 1px, transparent 1px);
+      background-size: 13px 13px;
     }
 
-    .one-pager-fallback span {
-      display: block;
-      color: #52616f;
-      font-size: 0.9rem;
-      line-height: 1.45;
+    .mini-footer-text {
+      color: #486581;
+      font-size: clamp(0.50rem, 1.75vw, 0.70rem);
+      line-height: 1.35;
+      text-align: center;
+      border-top: 1px solid rgba(16, 42, 67, 0.10);
+      padding-top: 9px;
     }
 
     .one-pager-note {
@@ -1128,12 +1231,30 @@
         <div class="team-heading">One-Pager</div>
         <div class="one-pager-frame">
           <a href="one-pager.pdf" target="_blank" rel="noopener noreferrer" aria-label="Open project one-pager PDF">
-            <img src="./one-pager-preview.png?v=2" alt="Project one-pager for biomimetic 3D-bioprinted cartilage implants" onerror="this.closest('.one-pager-frame').classList.add('preview-missing');">
-            <div class="one-pager-fallback" aria-hidden="true">
-              <div>
-                <strong>One-pager preview</strong>
-                <span>If the preview does not appear, open the PDF below.</span>
+            <div class="one-pager-mini" aria-hidden="true">
+              <div class="mini-kicker">Project One-Pager</div>
+              <h3>3D-Bioprinted Cartilage Implants</h3>
+              <p class="mini-subtitle">Improving treatment options for osteoarthritis patients</p>
+              <p class="mini-team">Zaina Alsarraj · Collis Bousliman · Eric Chen · Mia Holland</p>
+
+              <div class="mini-grid">
+                <div class="mini-block">
+                  <span>Problem</span>
+                  <p>32.5M Americans suffer from cartilage damage due to osteoarthritis.</p>
+                </div>
+                <div class="mini-block">
+                  <span>Approach</span>
+                  <p>Biomimetic 3D-bioprinted macroporous scaffolds for cartilage repair.</p>
+                </div>
               </div>
+
+              <div class="mini-diagram">
+                <div class="mini-layer layer-top">Articular cartilage layer</div>
+                <div class="mini-layer layer-bottom">β-TCP calcified layer</div>
+                <div class="mini-dots" aria-hidden="true"></div>
+              </div>
+
+              <div class="mini-footer-text">Layered scaffold architecture supports nutrient diffusion, cell viability, and osteointegration.</div>
             </div>
           </a>
         </div>
