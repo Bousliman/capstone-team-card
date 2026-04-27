@@ -29,6 +29,7 @@
 
     * {
       box-sizing: border-box;
+      min-width: 0;
     }
 
     html {
@@ -38,6 +39,7 @@
 
     body {
       margin: 0;
+      width: 100%;
       min-height: 100vh;
       font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       color: var(--text);
@@ -77,10 +79,15 @@
       padding: 24px 0 40px;
       position: relative;
       z-index: 1;
+      overflow-x: clip;
     }
 
     .hero-shell {
       position: relative;
+      width: 100%;
+      max-width: 100%;
+      margin-left: auto;
+      margin-right: auto;
       overflow: hidden;
       border-radius: 40px;
       border: 1px solid var(--line);
@@ -128,18 +135,27 @@
       width: 100%;
       max-width: 980px;
       margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
     }
 
     .logo-wrap {
       display: flex;
       justify-content: center;
+      width: 100%;
+      max-width: 100%;
       margin: 0 auto 28px;
+      overflow: hidden;
     }
 
     .logo-card {
       display: inline-flex;
       align-items: center;
       justify-content: center;
+      width: min(900px, 100%);
+      max-width: 100%;
       padding: 0;
       border: 0;
       background: transparent;
@@ -148,9 +164,9 @@
 
     .logo-card img {
       display: block;
-      max-width: min(900px, 96vw);
+      width: 100%;
+      max-width: 100%;
       max-height: 122px;
-      width: auto;
       height: auto;
       object-fit: contain;
       filter: drop-shadow(0 14px 28px rgba(0, 0, 0, 0.30));
@@ -205,6 +221,8 @@
       flex-wrap: wrap;
       margin: 30px auto 0;
       width: 100%;
+      max-width: 100%;
+      align-self: center;
     }
 
     .button {
@@ -235,6 +253,8 @@
     }
 
     .team-section {
+      width: 100%;
+      max-width: 100%;
       margin-top: 26px;
     }
 
@@ -269,6 +289,8 @@
       grid-template-columns: repeat(4, minmax(0, 1fr));
       gap: 14px;
       align-items: stretch;
+      width: 100%;
+      max-width: 100%;
     }
 
     .profile-card {
@@ -533,12 +555,25 @@
     }
 
     @media (max-width: 760px) {
+      html,
+      body {
+        width: 100%;
+        max-width: 100%;
+        overflow-x: hidden;
+      }
+
       .page {
-        width: min(100% - 18px, var(--max));
-        padding: max(24px, env(safe-area-inset-top)) 0 28px;
+        width: 100%;
+        max-width: var(--max);
+        margin-left: auto;
+        margin-right: auto;
+        padding: max(28px, env(safe-area-inset-top)) 9px 28px;
+        overflow-x: hidden;
       }
 
       .hero-shell {
+        width: 100%;
+        max-width: 100%;
         border-radius: 30px;
       }
 
@@ -547,17 +582,32 @@
       }
 
       .hero {
+        width: 100%;
         min-height: auto;
-        padding: 42px 18px 38px;
+        padding: 42px 16px 38px;
+      }
+
+      .hero > div {
+        width: 100%;
+        max-width: 100%;
+        align-items: center;
+      }
+
+      .logo-card {
+        width: min(680px, 100%);
       }
 
       .logo-card img {
-        max-width: min(680px, 92vw);
+        width: 100%;
+        max-width: 100%;
         max-height: 88px;
       }
 
       h1 {
+        width: 100%;
+        max-width: 100%;
         font-size: clamp(2.0rem, 10.5vw, 3.8rem);
+        text-align: center;
       }
 
       .hero-actions {
@@ -770,14 +820,17 @@
   </main>
 
   <script>
-    const smoothScrollTo = (target, duration = 950) => {
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    const smoothScrollTo = (target, duration = 1850) => {
       const start = window.scrollY;
       const targetTop = target.getBoundingClientRect().top + window.scrollY - 14;
       const distance = targetTop - start;
       const startTime = performance.now();
-      const ease = (t) => t < 0.5
-        ? 4 * t * t * t
-        : 1 - Math.pow(-2 * t + 2, 3) / 2;
+      const ease = (t) => {
+        if (t < 0.5) return 16 * t * t * t * t * t;
+        return 1 - Math.pow(-2 * t + 2, 5) / 2;
+      };
 
       const step = (currentTime) => {
         const elapsed = currentTime - startTime;
@@ -816,6 +869,87 @@
     });
 
     revealElements.forEach((element) => revealObserver.observe(element));
+
+    if (!prefersReducedMotion) {
+      const scrollState = {
+        current: window.scrollY,
+        target: window.scrollY,
+        raf: null
+      };
+
+      const clamp = (value, min, max) => Math.max(min, Math.min(value, max));
+      const maxScroll = () => document.documentElement.scrollHeight - window.innerHeight;
+
+      const animateSlowScroll = () => {
+        scrollState.current += (scrollState.target - scrollState.current) * 0.085;
+
+        if (Math.abs(scrollState.target - scrollState.current) < 0.45) {
+          scrollState.current = scrollState.target;
+          window.scrollTo(0, scrollState.current);
+          scrollState.raf = null;
+          return;
+        }
+
+        window.scrollTo(0, scrollState.current);
+        scrollState.raf = window.requestAnimationFrame(animateSlowScroll);
+      };
+
+      const startSlowScroll = () => {
+        if (!scrollState.raf) {
+          scrollState.raf = window.requestAnimationFrame(animateSlowScroll);
+        }
+      };
+
+      window.addEventListener('wheel', (event) => {
+        if (event.ctrlKey) return;
+        event.preventDefault();
+
+        scrollState.target = clamp(
+          scrollState.target + event.deltaY * 0.12,
+          0,
+          maxScroll()
+        );
+
+        startSlowScroll();
+      }, { passive: false });
+
+      let lastTouchY = null;
+
+      window.addEventListener('touchstart', (event) => {
+        if (!event.touches || event.touches.length !== 1) return;
+        lastTouchY = event.touches[0].clientY;
+        scrollState.current = window.scrollY;
+        scrollState.target = window.scrollY;
+      }, { passive: true });
+
+      window.addEventListener('touchmove', (event) => {
+        if (!event.touches || event.touches.length !== 1 || lastTouchY === null) return;
+        event.preventDefault();
+
+        const nextTouchY = event.touches[0].clientY;
+        const delta = lastTouchY - nextTouchY;
+        lastTouchY = nextTouchY;
+
+        scrollState.target = clamp(
+          scrollState.target + delta * 0.45,
+          0,
+          maxScroll()
+        );
+
+        startSlowScroll();
+      }, { passive: false });
+
+      window.addEventListener('touchend', () => {
+        lastTouchY = null;
+      }, { passive: true });
+
+      window.addEventListener('scroll', () => {
+        if (!scrollState.raf) {
+          scrollState.current = window.scrollY;
+          scrollState.target = window.scrollY;
+        }
+      }, { passive: true });
+    }
 
     document.querySelectorAll('.copy-button').forEach((button) => {
       button.addEventListener('click', async (event) => {
